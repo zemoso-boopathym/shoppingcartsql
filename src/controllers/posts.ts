@@ -10,15 +10,19 @@ export const getPosts = async (
   res: Response,
   next: NextFunction
 ) => {
-  const postModel: any = new Post(null, null, null, null);
-  const username = req.username;
   try {
+    const postModel: any = new Post(null, null, null, null);
+    const username = req.body.username;
     const result = await postModel.fetchAllByMail(username);
-    return res.status(200).render("posts/showposts", {
-      path: "/posts/showposts",
-      pageTitle: "Posts",
+    return res.status(200).json({
       posts: result[0],
+      length: result[0].length,
     });
+    // render("posts/showposts", {
+    //   path: "/posts/showposts",
+    //   pageTitle: "Posts",
+    //   posts: result[0],
+    // });
   } catch (err) {
     const error = err as Error;
     return res.status(500).json({
@@ -33,7 +37,7 @@ export const createPostForm = (
   res: Response,
   next: NextFunction
 ) => {
-  res.render("posts/createpost", {
+  res.status(200).render("posts/createpost", {
     path: "/posts/createpost",
     pageTitle: "Create Post",
     errorMessage: "",
@@ -47,7 +51,7 @@ export const createPost = async (
 ) => {
   const { title, description } = req.body;
   const createdAt = new Date();
-  const email = req.username;
+  const email = req.body.username;
   if (!email) {
     return res.status(401).json({
       message: "Unauthorized!",
@@ -72,10 +76,18 @@ export const deletePost = async (
   next: NextFunction
 ) => {
   const { id } = req.body;
-  const postModel: any = new Post(null, null, null, null);
+
   try {
+    const postModel: any = new Post(null, null, null, null);
     const result = await postModel.deleteByID(id);
-    return res.status(200).json(result[0]);
+
+    if (result[0].affectedRows === 1) {
+      return res.status(200).json(result[0]);
+    }
+
+    return res.status(404).json({
+      message: result[0],
+    });
   } catch (err) {
     const error = err as Error;
     return res.status(500).json({
@@ -91,7 +103,7 @@ export const getAllPosts = async (
   next: NextFunction
 ) => {
   const postModel: any = new Post(null, null, null, null);
-  const username = req.username;
+  const username = req.body.username;
   if (username !== "admin@admin.com") {
     return res.status(401).render("401", {
       path: "/401",
@@ -100,9 +112,7 @@ export const getAllPosts = async (
   }
   try {
     const result = await postModel.adminFetchAll();
-    return res.status(200).render("posts/showposts", {
-      path: "/posts/showposts",
-      pageTitle: "Posts",
+    return res.status(200).json({
       posts: result[0],
     });
   } catch (err) {

@@ -9,10 +9,10 @@ export const landingPage = (
   res: Response,
   next: NextFunction
 ) => {
-  return res.status(200).render("posts/welcome", {
+  res.status(200).render("posts/welcome", {
     path: "/posts/welcome",
     pageTitle: "Welcome",
     token: null,
-    isAuthenticated: req.username,
+    isAuthenticated: req.body.username,
   });
 };

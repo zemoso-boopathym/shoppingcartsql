@@ -11,6 +11,10 @@ interface JwtPayload {
   username: string;
 }
 
+interface error extends Error {
+  httpStatusCode?: number;
+}
+
 const isAuthenticated = async (
   req: UserRequest,
   res: Response,
@@ -18,18 +22,23 @@ const isAuthenticated = async (
 ) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    return res.status(404).render("404", {
-      path: "/404",
-      pageTitle: "404 - Page Not found",
-      isAuthenticated: req.username,
-    });
+    // return res.status(404).render("404", {
+    //   path: "/404",
+    //   pageTitle: "404 - Page Not found",
+    // });
+    const error: error = new Error("Not Authenticated!");
+    error.httpStatusCode = 401;
+    throw error;
   }
   const token = authHeader?.split(" ")[1];
   if (token) {
     try {
-      const { username } = jwt.verify(token, config.JWT_KEY!) as JwtPayload;
-      req.username = username;
-      res.locals.isAuthenticated = req.username;
+      const { username } = jwt.verify(
+        token,
+        config.JWT_KEY!
+      ) as unknown as JwtPayload;
+      req.body.username = username;
+      res.locals.isAuthenticated = req.body.username;
       next();
     } catch (err) {
       const error = err as Error;

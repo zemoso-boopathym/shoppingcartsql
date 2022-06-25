@@ -1,5 +1,9 @@
 import db from "../util/database";
 
+interface error extends Error {
+  httpStatusCode?: number;
+}
+
 export default class Post {
   title: string | null;
   description: string | null;
@@ -25,7 +29,14 @@ export default class Post {
   }
 
   deleteByID(id: string) {
-    return db.execute("DELETE * FROM posts WHERE id = ?", [id]);
+    return db
+      .execute("DELETE FROM posts WHERE id = ?", [id])
+      .then((result) => result)
+      .catch((err) => {
+        const error: error = new Error(err);
+        error.httpStatusCode = 404;
+        throw error;
+      });
   }
 
   adminFetchAll() {

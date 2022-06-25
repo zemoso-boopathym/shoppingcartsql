@@ -8,7 +8,7 @@ interface UserRequest extends Request {
 }
 
 export const loginPage = (req: Request, res: Response, next: NextFunction) => {
-  res.render("auth/login", {
+  res.status(200).render("auth/login", {
     path: "/login",
     pageTitle: "Login",
     errorMessage: "",
@@ -34,14 +34,13 @@ export const signupPage = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const validateToken = (req: Request, res: Response, next: NextFunction) => {
-  return res.status(200).json({
-    message: "User is Authorized!",
-  });
-};
-
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(403).json({
+      message: "Not valid credentials!",
+    });
+  }
 
   try {
     const hashPassword = await bcryptjs.hash(password, 10);
@@ -81,9 +80,9 @@ const postLogin = async (
 ) => {
   const { email, password } = req.body;
 
-  const userModel: any = new User(email, password);
-  const userData = await userModel.findByMail(email);
   try {
+    const userModel: any = new User(email, password);
+    const userData = await userModel.findByMail(email);
     const result = await bcryptjs.compare(password, userData[0][0].password);
     if (result) {
       signJWT(userData[0][0], (_error, token) => {
@@ -93,17 +92,15 @@ const postLogin = async (
             error: _error,
           });
         } else if (token) {
-          return res.status(200).render("posts/welcome", {
-            path: "/posts/welcome",
-            pageTitle: "Welcome",
+          return res.status(200).json({
             token: token,
-            isAuthenticated: req.username,
+            username: userData[0][0].email,
           });
         }
       });
     } else {
       return res.status(401).json({
-        message: "Password Mismatch",
+        message: "email or password is wrong!",
       });
     }
   } catch (err) {
@@ -120,7 +117,7 @@ const logoutUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  req.username = null;
+  req.body.username = null;
   res.locals.isAuthenticated = false;
   res.status(200).render("auth/login", {
     path: "/auth/login",
@@ -137,10 +134,10 @@ const logoutUser = async (
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   const userModel: any = new User(null, null);
   const userData = await userModel.fetchAll();
-  return res.status(200).json({
+  res.status(200).json({
     users: userData[0],
     count: userData[0].length,
   });
 };
 
-export { validateToken, postLogin, register, logoutUser, getAllUsers };
+export { postLogin, register, logoutUser, getAllUsers };

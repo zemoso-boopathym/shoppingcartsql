@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(setHeaders);
 
 app.use((req: UserRequest, res: Response, next: NextFunction) => {
-  res.locals.isAuthenticated = req.username;
+  res.locals.isAuthenticated = req.body.username;
   next();
 });
 
@@ -56,4 +56,4 @@ app.use(
   }
 );
 
-app.listen(config.PORT || 3000);
+export default app.listen(config.PORT || 3000);

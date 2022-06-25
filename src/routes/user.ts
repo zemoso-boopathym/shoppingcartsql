@@ -2,7 +2,6 @@ import express from "express";
 import {
   loginPage,
   signupPage,
-  validateToken,
   register,
   postLogin,
   getAllUsers,
@@ -14,7 +13,6 @@ const router = express.Router();
 
 router.get("/login", loginPage);
 router.get("/signup", signupPage);
-router.get("/validate", validateToken);
 
 router.post("/login", postLogin);
 router.post("/signup", register);

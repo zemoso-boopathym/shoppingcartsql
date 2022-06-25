@@ -1,4 +1,5 @@
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
+import { config } from "../util/config";
 
 interface User {
   email: string;
@@ -14,7 +15,7 @@ const signJWT = (
       {
         username: user.email,
       },
-      "basicauthjwttoken",
+      config.JWT_KEY!,
       {
         issuer: "Boopathy",
         algorithm: "HS256",

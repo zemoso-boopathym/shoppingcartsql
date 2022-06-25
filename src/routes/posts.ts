@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/getPosts", isAuthenticated, getPosts);
 router.get("/createPost", isAuthenticated, createPostForm);
-router.post("/createPost", createPost);
+router.post("/createPost", isAuthenticated, createPost);
 router.delete("/deletePost", isAuthenticated, deletePost);
 router.get("/getAllPosts", isAuthenticated, getAllPosts);
 
