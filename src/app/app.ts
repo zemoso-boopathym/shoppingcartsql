@@ -2,14 +2,13 @@ import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import bodyParser from "body-parser";
 
-import setHeaders from "./routes/headers";
-import landingRoute from "./routes/landing";
-import userRoutes from "./routes/user";
-import postRoutes from "./routes/posts";
-import error404 from "./routes/error404";
+import setHeaders from "../routes/headers";
+import landingRoute from "../routes/landing";
+import userRoutes from "../routes/user";
+import postRoutes from "../routes/posts";
+import error404 from "../routes/error404";
 
-import { config } from "./util/config";
-import isAuthenticated from "./middleware/isAuth";
+import { config } from "../util/config";
 
 interface UserRequest extends Request {
   username?: string;
@@ -51,7 +50,7 @@ app.use(
     next: NextFunction
   ) => {
     res.status(error.httpStatusCode).json({
-      error: error.message,
+      error: error,
     });
   }
 );

@@ -15,10 +15,10 @@ export default class Post {
     createdAt: Date | null,
     email: string | null
   ) {
-    this.title = title ?? "";
-    this.description = description ?? "";
-    this.createdAt = createdAt ?? new Date();
-    this.email = email ?? "";
+    this.title = title;
+    this.description = description;
+    this.createdAt = createdAt;
+    this.email = email;
   }
 
   save() {
@@ -29,14 +29,7 @@ export default class Post {
   }
 
   deleteByID(id: string) {
-    return db
-      .execute("DELETE FROM posts WHERE id = ?", [id])
-      .then((result) => result)
-      .catch((err) => {
-        const error: error = new Error(err);
-        error.httpStatusCode = 404;
-        throw error;
-      });
+    return db.execute("DELETE FROM posts WHERE id = ?", [id]);
   }
 
   adminFetchAll() {

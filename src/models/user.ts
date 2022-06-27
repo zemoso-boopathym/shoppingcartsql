@@ -1,9 +1,5 @@
 import db from "../util/database";
 
-interface error extends Error {
-  httpStatusCode?: number;
-}
-
 export default class User {
   email: string | null;
   password: string | null;
@@ -13,37 +9,25 @@ export default class User {
   }
 
   save() {
-    return db
-      .execute("INSERT INTO users (email, password) VALUES (?, ?)", [
-        this.email,
-        this.password,
-      ])
-      .then((result) => result)
-      .catch((err) => {
-        const error: error = new Error(err);
-        error.httpStatusCode = 404;
-        throw error;
-      });
+    return db.execute("INSERT INTO users (email, password) VALUES (?, ?)", [
+      this.email,
+      this.password,
+    ]);
   }
-
-  deleteByEmail(email: string) {}
 
   fetchAll() {
     return db.execute("SELECT email FROM users");
   }
 
+  deleteByMail(email: string) {
+    if (email) {
+      return db.execute("DELETE FROM users WHERE email = ?", [email]);
+    }
+  }
+
   findByMail(email: string) {
     if (email) {
-      return db
-        .execute("SELECT * FROM users WHERE email = ?", [email])
-        .then((result) => result)
-        .catch((err) => {
-          const error: error = new Error();
-          error.httpStatusCode = 404;
-          throw error;
-        });
-    } else {
-      return;
+      return db.execute("SELECT * FROM users WHERE email = ?", [email]);
     }
   }
 }

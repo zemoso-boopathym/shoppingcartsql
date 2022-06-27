@@ -22,17 +22,14 @@ const isAuthenticated = async (
 ) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    // return res.status(404).render("404", {
-    //   path: "/404",
-    //   pageTitle: "404 - Page Not found",
-    // });
-    const error: error = new Error("Not Authenticated!");
-    error.httpStatusCode = 401;
-    throw error;
+    return res.status(404).render("404", {
+      path: "/404",
+      pageTitle: "404 - Page Not found",
+    });
   }
-  const token = authHeader?.split(" ")[1];
-  if (token) {
-    try {
+  try {
+    const token = authHeader.split(" ")[1];
+    if (token) {
       const { username } = jwt.verify(
         token,
         config.JWT_KEY!
@@ -40,15 +37,15 @@ const isAuthenticated = async (
       req.body.username = username;
       res.locals.isAuthenticated = req.body.username;
       next();
-    } catch (err) {
-      const error = err as Error;
-      return res.status(404).json({
-        message: error.message,
+    } else {
+      return res.status(401).json({
+        message: "Unauthorized!",
       });
     }
-  } else {
-    return res.status(401).json({
-      message: "Unauthorized!",
+  } catch (err) {
+    const error = err as Error;
+    return res.status(404).json({
+      message: error.message,
     });
   }
 };

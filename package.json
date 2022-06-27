@@ -4,9 +4,10 @@
   "description": "Implementing shopping cart POC in Node Js with SQL and Typescript features",
   "main": "dist/app.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/test/**/*.test.ts",
-    "compile": "tsc && node dist/app.js",
-    "start": "nodemon --watch src/ --exec \"npm run compile\" -e ts"
+    "start": "nodemon --watch src/ --exec \"npm run compile\" -e ts",
+    "compile": "tsc && node dist/app/app.js",
+    "test": "nyc --silent mocha -r ts-node/register src/test/**/*.test.ts",
+    "coverage": "nyc report --reporter=html --report-dir='./coverage_report'"
   },
   "repository": {
     "type": "git",
@@ -50,8 +51,11 @@
     "@types/sinon": "^10.0.11",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.1.1",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
+    "nyc": "^15.1.0",
+    "istanbul": "^0.4.5",
     "sinon": "^14.0.0",
     "ts-node": "^10.8.1"
   }

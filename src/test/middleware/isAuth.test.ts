@@ -1,84 +1,41 @@
-// import { expect } from "chai";
-// import * as express from "express";
-// import sinon from "sinon";
-// import jwt from "jsonwebtoken";
+import chai from "chai";
+import chaiHttp from "chai-http";
+import app from "../../app/app";
+import isAuthenticated from "../../middleware/isAuth";
 
-// import isAuthenticated from "../../middleware/isAuth";
+chai.should();
+chai.use(chaiHttp);
 
-// declare module "jsonwebtoken" {
-//   export interface JwtPayload {
-//     role: string;
-//   }
-// }
+describe("isAuthenticated middleware", () => {
+  it("it should not allow user to get Posts if unauthenticated", (done) => {
+    chai
+      .request(app)
+      .get("/post/getPosts")
+      .send()
+      .end((_, response) => {
+        response.should.have.status(404);
+        done();
+      });
+  });
 
-// describe("Auth Middleware", function () {
-//   before(function () {});
-//   it("should throw an error if no authorization header is present", function () {
-//     const req = {
-//       get: function () {
-//         return null;
-//       },
-//     } as { get: () => null };
-//     expect(
-//       isAuthenticated.bind(
-//         this,
-//         req as unknown as express.Request,
-//         {} as express.Response,
-//         () => {}
-//       )
-//     ).to.throw("Not Authenticated!");
-//   });
-
-//   it("should throw an error if the authorization header is only one string", function () {
-//     const req = {
-//       get: function () {
-//         return null;
-//       },
-//     } as { get: () => null };
-//     expect(
-//       isAuthenticated.bind(
-//         this,
-//         req as unknown as express.Request,
-//         {} as express.Response,
-//         () => {}
-//       )
-//     ).to.throw();
-//   });
-
-//   it("should throw an error if the token cannot be verified", function () {
-//     const req = {
-//       get: function () {
-//         return "Bearer xyz";
-//       },
-//     };
-//     expect(
-//       isAuthenticated.bind(
-//         this,
-//         req as unknown as express.Request,
-//         {} as express.Response,
-//         () => {}
-//       )
-//     ).to.throw();
-//   });
-
-//   it("should yield a userId after decoding the token", function () {
-//     const req = {
-//       get: function () {
-//         return "Bearer asdfasdasgd";
-//       },
-//     };
-//     sinon.stub(jwt, "verify").callsFake(function foo() {
-//       return { username: "abc" };
-//     });
-//     isAuthenticated(
-//       req as unknown as express.Request,
-//       {} as express.Response,
-//       () => {}
-//     );
-//     expect(req as unknown as express.Request).to.have.property("username");
-//     expect(req as unknown as express.Request).to.have.property(
-//       "username",
-//       "abc"
-//     );
-//   });
-// });
+  it("it should not allow user to get Posts for malformed token", (done) => {
+    chai
+      .request(app)
+      .get("/post/getPosts")
+      .auth("", { type: "bearer" })
+      .end((_, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+  it("it should not allow user to get Posts for malformed token", (done) => {
+    chai
+      .request(app)
+      .get("/post/getPosts")
+      .auth("", { type: "bearer" })
+      .end((_, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+});

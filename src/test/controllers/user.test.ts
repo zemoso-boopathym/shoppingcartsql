@@ -1,10 +1,15 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import app from "../../app";
+import app from "../../app/app";
 import { config } from "../../util/config";
 
 chai.should();
 chai.use(chaiHttp);
+
+const users = {
+  admin: "admin@admin.com",
+  test: "test@test.com",
+};
 
 describe("Users API", () => {
   /* Login page GET route */
@@ -57,7 +62,6 @@ describe("Users API", () => {
         .end((req, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
-          const { token, username } = res.body;
           done();
         });
     });
@@ -91,21 +95,21 @@ describe("Users API", () => {
   });
 
   describe("POST /signup", () => {
-    // it("it should successfully register and post valid success message", (done) => {
-    //   const timeStamp = new Date().getTime();
-    //   const testUser = {
-    //     email: `test${timeStamp}@test.com`,
-    //     password: "test123",
-    //   };
-    //   chai
-    //     .request(app)
-    //     .post("/signup")
-    //     .send(testUser)
-    //     .end((req, res) => {
-    //       res.should.have.status(201);
-    //       done();
-    //     });
-    // });
+    it("it should successfully register and post valid success message", (done) => {
+      const timeStamp = new Date().getTime();
+      const testUser = {
+        email: `test${timeStamp}@test.com`,
+        password: "test123",
+      };
+      chai
+        .request(app)
+        .post("/signup")
+        .send(testUser)
+        .end((req, res) => {
+          res.should.have.status(201);
+          done();
+        });
+    });
 
     it("it should throw an error with invalid user credentials", (done) => {
       const testUser = {
@@ -144,6 +148,81 @@ describe("Users API", () => {
         .post("/logout")
         .end((req, res) => {
           res.should.have.status(200);
+          done();
+        });
+    });
+  });
+
+  describe("GET /getAllUsers", () => {
+    it("it should get all valid users for admin", (done) => {
+      chai
+        .request(app)
+        .get("/getallusers")
+        .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+        .end((_, response) => {
+          response.should.have.status(200);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE /deleteUser", () => {
+    it("it should delete the test user added for testing", (done) => {
+      chai
+        .request(app)
+        .get("/getallusers")
+        .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+        .end((_, response) => {
+          response.should.have.status(200);
+
+          const usersData = response.body.users;
+          const testMail = usersData[usersData.length - 1].email;
+
+          chai
+            .request(app)
+            .delete("/deleteUser")
+            .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+            .send({ email: testMail })
+            .end((_, resp) => {
+              resp.should.have.status(200);
+              done();
+            });
+        });
+    });
+
+    it("it should not delete any user added already in db", (done) => {
+      chai
+        .request(app)
+        .delete("/deleteUser")
+        .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+        .send({ email: "asdf@asdf.com" })
+        .end((_, resp) => {
+          resp.should.have.status(500);
+          done();
+        });
+    });
+
+    it("it should not delete any user for empty credentials", (done) => {
+      chai
+        .request(app)
+        .delete("/deleteUser")
+        .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+        .send({})
+        .end((_, resp) => {
+          resp.should.have.status(404);
+          done();
+        });
+    });
+  });
+
+  describe("GET /error404", () => {
+    it("it should not get any valid page", (done) => {
+      chai
+        .request(app)
+        .get("/error404")
+        .auth(config.ADMIN_TOKEN!, { type: "bearer" })
+        .end((_, response) => {
+          response.should.have.status(404);
           done();
         });
     });

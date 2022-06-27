@@ -6,6 +6,7 @@ import {
   postLogin,
   getAllUsers,
   logoutUser,
+  deleteUser,
 } from "../controllers/user";
 import isAuthenticated from "../middleware/isAuth";
 
@@ -19,5 +20,6 @@ router.post("/signup", register);
 router.post("/logout", logoutUser);
 
 router.get("/getallusers", isAuthenticated, getAllUsers);
+router.delete("/deleteUser", isAuthenticated, deleteUser);
 
 export default router;
