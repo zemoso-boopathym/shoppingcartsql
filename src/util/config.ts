@@ -6,4 +6,8 @@ export const config = {
   USER_TOKEN: process.env.USER_TOKEN,
   ADMIN_TOKEN: process.env.ADMIN_TOKEN,
   INVALID_TOKEN: "SOME_TOKEN",
+  TEST_PWD: process.env.TEST_PWD,
+  ADMIN_PWD: process.env.ADMIN_PWD,
+  WRONG_PWD: process.env.WRONG_PWD,
+  DB_PWD: process.env.DB_PWD,
 };

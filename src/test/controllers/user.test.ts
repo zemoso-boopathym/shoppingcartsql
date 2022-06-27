@@ -53,7 +53,7 @@ describe("Users API", () => {
     it("it should successfully login on posting valid user credentials", (done) => {
       const testUser = {
         email: "test@test.com",
-        password: "test123",
+        password: config.TEST_PWD,
       };
       chai
         .request(app)
@@ -69,7 +69,7 @@ describe("Users API", () => {
     it("it should throw an error with wrong user credentials", (done) => {
       const testUser = {
         email: "new@new",
-        password: "1234",
+        password: config.WRONG_PWD,
       };
       chai
         .request(app)
@@ -99,7 +99,7 @@ describe("Users API", () => {
       const timeStamp = new Date().getTime();
       const testUser = {
         email: `test${timeStamp}@test.com`,
-        password: "test123",
+        password: config.TEST_PWD,
       };
       chai
         .request(app)
