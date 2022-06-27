@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import bodyParser from "body-parser";
+import helmet from "helmet";
 
 import setHeaders from "../routes/headers";
 import landingRoute from "../routes/landing";
@@ -30,6 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false })); // Content-type x-www-form-
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use(setHeaders);
+
+app.use(helmet.hidePoweredBy());
 
 app.use((req: UserRequest, res: Response, next: NextFunction) => {
   res.locals.isAuthenticated = req.body.username;
