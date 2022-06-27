@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --watch src/ --exec \"npm run compile\" -e ts",
     "compile": "tsc && node dist/app/app.js",
-    "test": "nyc --silent mocha -r ts-node/register src/test/**/*.test.ts",
+    "test": "nyc mocha -r ts-node/register src/test/**/*.test.ts",
     "coverage": "nyc report --reporter=html --report-dir='./coverage_report'"
   },
   "repository": {
