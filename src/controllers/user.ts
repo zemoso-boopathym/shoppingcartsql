@@ -53,8 +53,6 @@ const register = async (req: Request, res: Response, _next: NextFunction) => {
       const hashPassword = await bcryptjs.hash(password, 10);
       const userModel: any = new User(email, hashPassword);
       const result = await userModel.save();
-      console.log("result");
-      console.log(result);
       if (result[0].affectedRows === 1) {
         return res.status(201).render("auth/login", {
           path: "/login",
