@@ -7,7 +7,7 @@ interface UserRequest extends Request {
   username?: string | null;
 }
 
-interface error extends Error {
+interface ErrorWithStatusCode extends Error {
   httpStatusCode?: number;
 }
 
@@ -150,7 +150,7 @@ export const deleteUser = async (
       return res.status(200).json(result[0]);
     }
 
-    const error: error = new Error("Data not found!");
+    const error: ErrorWithStatusCode = new Error("Data not found!");
     error.httpStatusCode = 500;
     return next(error);
   } catch (error) {

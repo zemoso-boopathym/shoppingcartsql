@@ -1,9 +1,5 @@
 import db from "../util/database";
 
-interface error extends Error {
-  httpStatusCode?: number;
-}
-
 export default class Post {
   title: string | null;
   description: string | null;

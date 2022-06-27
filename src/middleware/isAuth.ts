@@ -11,10 +11,6 @@ interface JwtPayload {
   username: string;
 }
 
-interface error extends Error {
-  httpStatusCode?: number;
-}
-
 const isAuthenticated = async (
   req: UserRequest,
   res: Response,

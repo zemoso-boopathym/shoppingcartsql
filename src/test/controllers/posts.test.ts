@@ -113,7 +113,6 @@ describe("Posts API", () => {
       chai
         .request(app)
         .get("/post/getAllPosts")
-        .auth(config.INVALID_TOKEN!, { type: "bearer" })
         .end((_, response) => {
           response.should.have.status(404);
           done();
