@@ -45,9 +45,9 @@ app.use(error404);
 app.use(
   (
     error: ErrorStatusCode,
-    req: UserRequest,
+    _req: UserRequest,
     res: Response,
-    next: NextFunction
+    _next: NextFunction
   ) => {
     res.status(error.httpStatusCode).json({
       error: error,

@@ -7,7 +7,7 @@ interface UserRequest extends Request {
 export const landingPage = (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   res.status(200).render("posts/welcome", {
     path: "/posts/welcome",

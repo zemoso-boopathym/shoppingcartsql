@@ -139,7 +139,7 @@ describe("Posts API", () => {
             .delete("/post/deletePost")
             .auth(config.ADMIN_TOKEN!, { type: "bearer" })
             .send({ id: sampleID, email: users.admin })
-            .end((_, resp) => {
+            .end((_req, resp) => {
               resp.should.have.status(200);
               done();
             });

@@ -18,7 +18,7 @@ describe("Users API", () => {
       chai
         .request(app)
         .get("/login")
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(200);
           done();
         });
@@ -30,7 +30,7 @@ describe("Users API", () => {
       chai
         .request(app)
         .get("/signup")
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(200);
           done();
         });
@@ -42,7 +42,7 @@ describe("Users API", () => {
       chai
         .request(app)
         .get("/getallusers")
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(404);
           done();
         });
@@ -59,7 +59,7 @@ describe("Users API", () => {
         .request(app)
         .post("/login")
         .send(testUser)
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
           done();
@@ -75,7 +75,7 @@ describe("Users API", () => {
         .request(app)
         .post("/login")
         .send(testUser)
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(500);
           done();
         });
@@ -87,7 +87,7 @@ describe("Users API", () => {
         .request(app)
         .post("/login")
         .send(testUser)
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(500);
           done();
         });
@@ -105,7 +105,7 @@ describe("Users API", () => {
         .request(app)
         .post("/signup")
         .send(testUser)
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(201);
           done();
         });
@@ -120,7 +120,7 @@ describe("Users API", () => {
         .request(app)
         .post("/signup")
         .send(testUser)
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(403);
           done();
         });
@@ -134,7 +134,7 @@ describe("Users API", () => {
         .request(app)
         .get("/getallusers")
         .set({ Authorization: `Bearer ${token}` })
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(404);
           done();
         });
@@ -146,7 +146,7 @@ describe("Users API", () => {
       chai
         .request(app)
         .post("/logout")
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(200);
           done();
         });
@@ -183,7 +183,7 @@ describe("Users API", () => {
             .delete("/deleteUser")
             .auth(config.ADMIN_TOKEN!, { type: "bearer" })
             .send({ email: testMail })
-            .end((_, resp) => {
+            .end((_req, resp) => {
               resp.should.have.status(200);
               done();
             });

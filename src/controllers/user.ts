@@ -11,7 +11,11 @@ interface error extends Error {
   httpStatusCode?: number;
 }
 
-export const loginPage = (req: Request, res: Response, next: NextFunction) => {
+export const loginPage = (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   res.status(200).render("auth/login", {
     path: "/login",
     pageTitle: "Login",
@@ -24,7 +28,11 @@ export const loginPage = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-export const signupPage = (req: Request, res: Response, next: NextFunction) => {
+export const signupPage = (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   res.render("auth/signup", {
     path: "/signup",
     pageTitle: "Signup",
@@ -38,7 +46,7 @@ export const signupPage = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const register = async (req: Request, res: Response, next: NextFunction) => {
+const register = async (req: Request, res: Response, _next: NextFunction) => {
   try {
     const { email, password } = req.body;
     if (email && password) {
@@ -73,7 +81,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 const postLogin = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const { email, password } = req.body;
 
@@ -102,7 +110,7 @@ const postLogin = async (
 const logoutUser = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   req.body.username = null;
   res.locals.isAuthenticated = false;
@@ -118,7 +126,11 @@ const logoutUser = async (
   });
 };
 
-const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+const getAllUsers = async (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   const userModel: any = new User(null, null);
   const userData = await userModel.fetchAll();
   res.status(200).json({

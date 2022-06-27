@@ -8,7 +8,7 @@ interface UserRequest extends Request {
 export const getPosts = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   try {
     const postModel: any = new Post(null, null, null, null);
@@ -31,9 +31,9 @@ export const getPosts = async (
 };
 
 export const createPostForm = (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   res.status(200).render("posts/createpost", {
     path: "/posts/createpost",
@@ -45,7 +45,7 @@ export const createPostForm = (
 export const createPost = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   try {
     const { title, description } = req.body;
@@ -71,7 +71,7 @@ export const createPost = async (
 export const deletePost = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const { id } = req.body;
 
@@ -94,7 +94,7 @@ export const deletePost = async (
 export const getAllPosts = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const postModel: any = new Post(null, null, null, null);
   const username = req.body.username;

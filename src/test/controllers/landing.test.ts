@@ -12,7 +12,7 @@ describe("Welcome API", () => {
       chai
         .request(app)
         .get("/")
-        .end((req, res) => {
+        .end((_req, res) => {
           res.should.have.status(200);
           done();
         });

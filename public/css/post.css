@@ -2,7 +2,6 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  margin: auto;
   width: 40rem;
   max-width: 90%;
 }
@@ -19,8 +18,7 @@
 
 .post__item h1,
 .post__item h2 {
-  margin-right: 1rem;
-  margin: 0;
+  margin: 0 1rem 0 0;
   font-size: 1.5rem;
 }
 
