@@ -14,7 +14,7 @@ const users = {
 describe("Users API", () => {
   /* Login page GET route */
   describe("GET /login", () => {
-    it("it should get the login page", (done) => {
+    it("should get the login page", (done) => {
       chai
         .request(app)
         .get("/login")
@@ -26,7 +26,7 @@ describe("Users API", () => {
   });
 
   describe("GET /signup", () => {
-    it("it should get the signup page", (done) => {
+    it("should get the signup page", (done) => {
       chai
         .request(app)
         .get("/signup")
@@ -38,7 +38,7 @@ describe("Users API", () => {
   });
 
   describe("GET /getallusers", () => {
-    it("it should get throw an error when without authorization", (done) => {
+    it("should get throw an error when without authorization", (done) => {
       chai
         .request(app)
         .get("/getallusers")
@@ -50,7 +50,7 @@ describe("Users API", () => {
   });
 
   describe("POST /login", () => {
-    it("it should successfully login on posting valid user credentials", (done) => {
+    it("should successfully login on posting valid user credentials", (done) => {
       const testUser = {
         email: "test@test.com",
         password: config.TEST_PWD,
@@ -66,7 +66,7 @@ describe("Users API", () => {
         });
     });
 
-    it("it should throw an error with wrong user credentials", (done) => {
+    it("should throw an error with wrong user credentials", (done) => {
       const testUser = {
         email: "new@new",
         password: config.WRONG_PWD,
@@ -81,7 +81,7 @@ describe("Users API", () => {
         });
     });
 
-    it("it should throw an error with empty user credentials", (done) => {
+    it("should throw an error with empty user credentials", (done) => {
       const testUser = {};
       chai
         .request(app)
@@ -95,7 +95,7 @@ describe("Users API", () => {
   });
 
   describe("POST /signup", () => {
-    it("it should successfully register and post valid success message", (done) => {
+    it("should successfully register and post valid success message", (done) => {
       const timeStamp = new Date().getTime();
       const testUser = {
         email: `test${timeStamp}@test.com`,
@@ -111,7 +111,7 @@ describe("Users API", () => {
         });
     });
 
-    it("it should throw an error with invalid user credentials", (done) => {
+    it("should throw an error with invalid user credentials", (done) => {
       const testUser = {
         email: "",
         password: "",
@@ -128,7 +128,7 @@ describe("Users API", () => {
   });
 
   describe("GET /getallusers", () => {
-    it("it should return all the registered users", (done) => {
+    it("should return all the registered users", (done) => {
       const token = "some_secret";
       chai
         .request(app)
@@ -142,7 +142,7 @@ describe("Users API", () => {
   });
 
   describe("POST /logout", () => {
-    it("it should logout the user from application", (done) => {
+    it("should logout the user from application", (done) => {
       chai
         .request(app)
         .post("/logout")
@@ -154,7 +154,7 @@ describe("Users API", () => {
   });
 
   describe("GET /getAllUsers", () => {
-    it("it should get all valid users for admin", (done) => {
+    it("should get all valid users for admin", (done) => {
       chai
         .request(app)
         .get("/getallusers")
@@ -167,7 +167,7 @@ describe("Users API", () => {
   });
 
   describe("DELETE /deleteUser", () => {
-    it("it should delete the test user added for testing", (done) => {
+    it("should delete the test user added for testing", (done) => {
       chai
         .request(app)
         .get("/getallusers")
@@ -190,7 +190,7 @@ describe("Users API", () => {
         });
     });
 
-    it("it should not delete any user added already in db", (done) => {
+    it("should not delete any user added already in db", (done) => {
       chai
         .request(app)
         .delete("/deleteUser")
@@ -202,7 +202,7 @@ describe("Users API", () => {
         });
     });
 
-    it("it should not delete any user for empty credentials", (done) => {
+    it("should not delete any user for empty credentials", (done) => {
       chai
         .request(app)
         .delete("/deleteUser")
@@ -216,7 +216,7 @@ describe("Users API", () => {
   });
 
   describe("GET /error404", () => {
-    it("it should not get any valid page", (done) => {
+    it("should not get any valid page", (done) => {
       chai
         .request(app)
         .get("/error404")

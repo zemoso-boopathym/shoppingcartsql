@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { RowDataPacket } from "mysql2";
 import Post from "../models/posts";
 
 export const getPosts = async (
@@ -7,16 +8,13 @@ export const getPosts = async (
   _next: NextFunction
 ) => {
   try {
-    const postModel: any = new Post(null, null, null, null);
+    const postModel: Post = new Post();
     const username = req.body.email;
     if (!username) {
       throw new Error("Unauthorized!");
     }
     const result = await postModel.fetchAllByMail(username);
-    return res.status(200).json({
-      posts: result[0],
-      length: result[0].length,
-    });
+    return res.status(200).json(result);
   } catch (err) {
     const error = err as Error;
     return res.status(401).json({
@@ -31,10 +29,9 @@ export const createPostForm = (
   res: Response,
   _next: NextFunction
 ) => {
-  res.status(200).render("posts/createpost", {
+  res.send(200).render("posts/createpost", {
     path: "/posts/createpost",
     pageTitle: "Create Post",
-    errorMessage: "",
   });
 };
 
@@ -48,9 +45,9 @@ export const createPost = async (
     const createdAt = new Date();
     const email = req.body.username;
     if (email && title && description) {
-      const postModel: any = new Post(title, description, createdAt, email);
+      const postModel: Post = new Post(title, description, createdAt, email);
       const result = await postModel.save();
-      if (result[0].affectedRows === 1) {
+      if ((result[0] as RowDataPacket).affectedRows === 1) {
         return res.status(200).json(result[0]);
       }
     }
@@ -72,10 +69,10 @@ export const deletePost = async (
   const { id } = req.body;
 
   try {
-    const postModel: any = new Post(null, null, null, null);
+    const postModel: Post = new Post();
     const result = await postModel.deleteByID(id);
 
-    if (result[0].affectedRows === 1) {
+    if ((result as RowDataPacket)[0].affectedRows === 1) {
       return res.status(200).json(result[0]);
     }
 
@@ -92,7 +89,7 @@ export const getAllPosts = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const postModel: any = new Post(null, null, null, null);
+  const postModel: Post = new Post();
   const username = req.body.username;
   try {
     if (username !== "admin@admin.com") {

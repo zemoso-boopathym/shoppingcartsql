@@ -17,7 +17,7 @@ const testPost = {
 
 describe("Posts API", () => {
   describe("GET /getPosts", () => {
-    it("it should logout user first", (done) => {
+    it("should logout user first", (done) => {
       chai
         .request(app)
         .post("/logout")
@@ -27,7 +27,7 @@ describe("Posts API", () => {
           done();
         });
     });
-    it("it should not get posts on not passing email", (done) => {
+    it("should not get posts on not passing email", (done) => {
       chai
         .request(app)
         .get("/post/getPosts")
@@ -37,7 +37,7 @@ describe("Posts API", () => {
           done();
         });
     });
-    it("it should successfully login and get logged in user posts", (done) => {
+    it("should successfully login and get logged in user posts", (done) => {
       chai
         .request(app)
         .get("/post/getPosts")
@@ -51,18 +51,17 @@ describe("Posts API", () => {
   });
 
   describe("GET /createPost", () => {
-    it("it should get the createPost page", (done) => {
+    it("should get the createPost page", (done) => {
       chai
         .request(app)
         .get("/post/createPost")
         .auth(config.USER_TOKEN!, { type: "bearer" })
-        .send({ email: "test@test.com" })
         .end((_, response) => {
           response.should.have.status(200);
           done();
         });
     });
-    it("it should create the post by the logged in user", (done) => {
+    it("should create the post by the logged in user", (done) => {
       chai
         .request(app)
         .post("/post/createPost")
@@ -73,7 +72,7 @@ describe("Posts API", () => {
           done();
         });
     });
-    it("it should not create any post by any user for no data", (done) => {
+    it("should not create any post by any user for no data", (done) => {
       chai
         .request(app)
         .post("/post/createPost")
@@ -87,7 +86,7 @@ describe("Posts API", () => {
   });
 
   describe("GET /getAllPosts", () => {
-    it("it should get all posts from all user for the logged in admin user", (done) => {
+    it("should get all posts from all user for the logged in admin user", (done) => {
       chai
         .request(app)
         .get("/post/getAllPosts")
@@ -98,7 +97,7 @@ describe("Posts API", () => {
         });
     });
 
-    it("it should not get any posts for normal user", (done) => {
+    it("should not get any posts for normal user", (done) => {
       chai
         .request(app)
         .get("/post/getAllPosts")
@@ -109,7 +108,7 @@ describe("Posts API", () => {
         });
     });
 
-    it("it should not get any posts with invalid token", (done) => {
+    it("should not get any posts with invalid token", (done) => {
       chai
         .request(app)
         .get("/post/getAllPosts")
@@ -121,7 +120,7 @@ describe("Posts API", () => {
   });
 
   describe("DELETE /deletePost", () => {
-    it("it should delete the post selected by the user", (done) => {
+    it("should delete the post selected by the user", (done) => {
       chai
         .request(app)
         .get("/post/getAllPosts")
@@ -145,7 +144,7 @@ describe("Posts API", () => {
         });
     });
 
-    it("it should not delete any post for invalid id", (done) => {
+    it("should not delete any post for invalid id", (done) => {
       chai
         .request(app)
         .delete("/post/deletePost")

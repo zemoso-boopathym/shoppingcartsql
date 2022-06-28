@@ -1,15 +1,15 @@
 import db from "../util/database";
 
 export default class Post {
-  title: string | null;
-  description: string | null;
-  createdAt: Date | null;
-  email: string | null;
+  title: string;
+  description: string;
+  createdAt: Date;
+  email: string;
   constructor(
-    title: string | null,
-    description: string | null,
-    createdAt: Date | null,
-    email: string | null
+    title: string = "",
+    description: string = "",
+    createdAt: Date = new Date(),
+    email: string = ""
   ) {
     this.title = title;
     this.description = description;

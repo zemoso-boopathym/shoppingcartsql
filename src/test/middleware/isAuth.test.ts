@@ -6,7 +6,7 @@ chai.should();
 chai.use(chaiHttp);
 
 describe("isAuthenticated middleware", () => {
-  it("it should not allow user to get Posts if unauthenticated", (done) => {
+  it("should not allow user to get Posts if unauthenticated", (done) => {
     chai
       .request(app)
       .get("/post/getPosts")
@@ -17,7 +17,7 @@ describe("isAuthenticated middleware", () => {
       });
   });
 
-  it("it should not allow user to get Posts for malformed token", (done) => {
+  it("should not allow user to get Posts for malformed token", (done) => {
     chai
       .request(app)
       .get("/post/getPosts")

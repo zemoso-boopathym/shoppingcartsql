@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import bcryptjs from "bcryptjs";
 import signJWT from "../util/signJWT";
 import User from "../models/user";
+import { RowDataPacket } from "mysql2";
 
 interface ErrorWithStatusCode extends Error {
   httpStatusCode?: number;
@@ -47,9 +48,9 @@ const register = async (req: Request, res: Response, _next: NextFunction) => {
     const { email, password } = req.body;
     if (email && password) {
       const hashPassword = await bcryptjs.hash(password, 10);
-      const userModel: any = new User(email, hashPassword);
+      const userModel: User = new User(email, hashPassword);
       const result = await userModel.save();
-      if (result[0].affectedRows === 1) {
+      if ((result as RowDataPacket)[0].affectedRows === 1) {
         return res.status(201).render("auth/login", {
           path: "/login",
           pageTitle: "Login",
@@ -76,15 +77,18 @@ const postLogin = async (req: Request, res: Response, _next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
-    const userModel: any = new User(email, password);
+    const userModel: User = new User(email, password);
     const userData = await userModel.findByMail(email);
-    const result = await bcryptjs.compare(password, userData[0][0].password);
+    const result = await bcryptjs.compare(
+      password,
+      (userData as RowDataPacket)[0][0].password
+    );
     if (result) {
-      const token = signJWT(userData[0][0]);
+      const token = signJWT((userData as RowDataPacket)[0][0]);
       if (token) {
         return res.status(200).json({
           token: token,
-          username: userData[0][0].email,
+          username: (userData as RowDataPacket)[0][0].email,
         });
       }
     }
@@ -117,11 +121,11 @@ const getAllUsers = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const userModel: any = new User(null, null);
+  const userModel: User = new User();
   const userData = await userModel.fetchAll();
   res.status(200).json({
     users: userData[0],
-    count: userData[0].length,
+    count: (userData as RowDataPacket)[0].length,
   });
 };
 
@@ -132,10 +136,10 @@ export const deleteUser = async (
 ) => {
   const { email } = req.body;
   try {
-    const userModel: any = new User(null, null);
+    const userModel: User = new User();
     const result = await userModel.deleteByMail(email);
-    if (result[0].affectedRows === 1) {
-      return res.status(200).json(result[0]);
+    if ((result as RowDataPacket)[0].affectedRows === 1) {
+      return res.status(200).json((result as RowDataPacket)[0]);
     }
 
     const error: ErrorWithStatusCode = new Error("Data not found!");

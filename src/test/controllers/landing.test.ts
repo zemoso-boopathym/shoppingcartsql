@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 describe("Welcome API", () => {
   /* Welcome page GET route */
   describe("GET /", () => {
-    it("it should get the welcome page", (done) => {
+    it("should get the welcome page", (done) => {
       chai
         .request(app)
         .get("/")

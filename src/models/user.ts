@@ -1,11 +1,11 @@
 import db from "../util/database";
 
 export default class User {
-  email: string | null;
-  password: string | null;
-  constructor(email: string | null, password: string | null) {
-    this.email = email ?? "";
-    this.password = password ?? "";
+  email: string;
+  password: string;
+  constructor(email: string = "", password: string = "") {
+    this.email = email;
+    this.password = password;
   }
 
   save() {
