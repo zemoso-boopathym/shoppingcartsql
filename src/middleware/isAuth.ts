@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../util/config";
 
 interface UserRequest extends Request {
-  username?: string;
+  username: string;
 }
 
 interface JwtPayload {

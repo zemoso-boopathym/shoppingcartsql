@@ -4,7 +4,7 @@ import signJWT from "../util/signJWT";
 import User from "../models/user";
 
 interface UserRequest extends Request {
-  username?: string | null;
+  username: string | null;
 }
 
 interface ErrorWithStatusCode extends Error {

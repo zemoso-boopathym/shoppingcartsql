@@ -11,10 +11,6 @@ import error404 from "../routes/error404";
 
 import { config } from "../util/config";
 
-interface UserRequest extends Request {
-  username?: string;
-}
-
 interface ErrorStatusCode extends Error {
   httpStatusCode: number;
 }
@@ -34,7 +30,7 @@ app.use(setHeaders);
 
 app.use(helmet.hidePoweredBy());
 
-app.use((req: UserRequest, res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.isAuthenticated = req.body.username;
   next();
 });
@@ -48,7 +44,7 @@ app.use(error404);
 app.use(
   (
     error: ErrorStatusCode,
-    _req: UserRequest,
+    _req: Request,
     res: Response,
     _next: NextFunction
   ) => {

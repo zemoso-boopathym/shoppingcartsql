@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 interface UserRequest extends Request {
-  username?: string;
+  username: string;
 }
 
 export const landingPage = (

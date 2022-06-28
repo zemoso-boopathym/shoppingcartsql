@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Post from "../models/posts";
 
 interface UserRequest extends Request {
-  username?: string;
+  username: string;
 }
 
 export const getPosts = async (
