@@ -2,9 +2,9 @@ import mysql from "mysql2";
 import { config } from "./config";
 
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  database: "node-shopcart",
+  host: config.DB_HOST,
+  user: config.DB_USER,
+  database: config.DB_NAME,
   password: config.DB_PWD,
 });
 

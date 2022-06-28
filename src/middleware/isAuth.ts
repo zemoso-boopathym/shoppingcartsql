@@ -3,16 +3,12 @@ import jwt from "jsonwebtoken";
 
 import { config } from "../util/config";
 
-interface UserRequest extends Request {
-  username: string;
-}
-
 interface JwtPayload {
   username: string;
 }
 
 const isAuthenticated = async (
-  req: UserRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

@@ -10,4 +10,7 @@ export const config = {
   ADMIN_PWD: process.env.ADMIN_PWD,
   WRONG_PWD: process.env.WRONG_PWD,
   DB_PWD: process.env.DB_PWD,
+  DB_HOST: process.env.DB_HOST,
+  DB_USER: process.env.DB_USER,
+  DB_NAME: process.env.DB_NAME,
 };

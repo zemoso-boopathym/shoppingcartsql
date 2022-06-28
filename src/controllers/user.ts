@@ -3,10 +3,6 @@ import bcryptjs from "bcryptjs";
 import signJWT from "../util/signJWT";
 import User from "../models/user";
 
-interface UserRequest extends Request {
-  username: string | null;
-}
-
 interface ErrorWithStatusCode extends Error {
   httpStatusCode?: number;
 }
@@ -76,11 +72,7 @@ const register = async (req: Request, res: Response, _next: NextFunction) => {
   }
 };
 
-const postLogin = async (
-  req: UserRequest,
-  res: Response,
-  _next: NextFunction
-) => {
+const postLogin = async (req: Request, res: Response, _next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
@@ -105,11 +97,7 @@ const postLogin = async (
   }
 };
 
-const logoutUser = async (
-  req: UserRequest,
-  res: Response,
-  _next: NextFunction
-) => {
+const logoutUser = async (req: Request, res: Response, _next: NextFunction) => {
   req.body.username = null;
   res.locals.isAuthenticated = false;
   res.status(200).render("auth/login", {

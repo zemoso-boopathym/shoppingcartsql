@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import Post from "../models/posts";
 
-interface UserRequest extends Request {
-  username: string;
-}
-
 export const getPosts = async (
-  req: UserRequest,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
@@ -43,7 +39,7 @@ export const createPostForm = (
 };
 
 export const createPost = async (
-  req: UserRequest,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
@@ -92,7 +88,7 @@ export const deletePost = async (
 };
 
 export const getAllPosts = async (
-  req: UserRequest,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
