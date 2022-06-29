@@ -3,7 +3,7 @@ import db from "../util/database";
 export default class User {
   email: string;
   password: string;
-  constructor(email: string = "", password: string = "") {
+  constructor(email: string, password: string) {
     this.email = email;
     this.password = password;
   }
@@ -15,17 +15,17 @@ export default class User {
     ]);
   }
 
-  fetchAll() {
+  static fetchAll() {
     return db.execute("SELECT email FROM users");
   }
 
-  deleteByMail(email: string) {
+  static deleteByMail(email: string) {
     if (email) {
       return db.execute("DELETE FROM users WHERE email = ?", [email]);
     }
   }
 
-  findByMail(email: string) {
+  static findByMail(email: string) {
     if (email) {
       return db.execute("SELECT * FROM users WHERE email = ?", [email]);
     }

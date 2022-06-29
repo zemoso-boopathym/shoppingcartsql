@@ -6,10 +6,10 @@ export default class Post {
   createdAt: Date;
   email: string;
   constructor(
-    title: string = "",
-    description: string = "",
-    createdAt: Date = new Date(),
-    email: string = ""
+    title: string,
+    description: string,
+    createdAt: Date,
+    email: string
   ) {
     this.title = title;
     this.description = description;
@@ -24,15 +24,15 @@ export default class Post {
     );
   }
 
-  deleteByID(id: string) {
+  static deleteByID(id: string) {
     return db.execute("DELETE FROM posts WHERE id = ?", [id]);
   }
 
-  adminFetchAll() {
+  static adminFetchAll() {
     return db.execute("SELECT * FROM posts");
   }
 
-  fetchAllByMail(email: string) {
+  static fetchAllByMail(email: string) {
     return db.execute("SELECT * FROM posts WHERE email = ?", [email]);
   }
 }

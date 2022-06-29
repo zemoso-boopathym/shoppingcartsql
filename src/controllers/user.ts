@@ -77,8 +77,7 @@ const postLogin = async (req: Request, res: Response, _next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
-    const userModel: User = new User(email, password);
-    const userData = await userModel.findByMail(email);
+    const userData = await User.findByMail(email);
     const result = await bcryptjs.compare(
       password,
       (userData as RowDataPacket)[0][0].password
@@ -121,8 +120,7 @@ const getAllUsers = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const userModel: User = new User();
-  const userData = await userModel.fetchAll();
+  const userData = await User.fetchAll();
   res.status(200).json({
     users: userData[0],
     count: (userData as RowDataPacket)[0].length,
@@ -136,8 +134,7 @@ export const deleteUser = async (
 ) => {
   const { email } = req.body;
   try {
-    const userModel: User = new User();
-    const result = await userModel.deleteByMail(email);
+    const result = await User.deleteByMail(email);
     if ((result as RowDataPacket)[0].affectedRows === 1) {
       return res.status(200).json((result as RowDataPacket)[0]);
     }

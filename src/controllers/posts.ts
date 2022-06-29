@@ -8,12 +8,11 @@ export const getPosts = async (
   _next: NextFunction
 ) => {
   try {
-    const postModel: Post = new Post();
     const username = req.body.email;
     if (!username) {
       throw new Error("Unauthorized!");
     }
-    const result = await postModel.fetchAllByMail(username);
+    const result = await Post.fetchAllByMail(username);
     return res.status(200).json(result);
   } catch (err) {
     const error = err as Error;
@@ -29,10 +28,7 @@ export const createPostForm = (
   res: Response,
   _next: NextFunction
 ) => {
-  res.send(200).render("posts/createpost", {
-    path: "/posts/createpost",
-    pageTitle: "Create Post",
-  });
+  res.sendStatus(200);
 };
 
 export const createPost = async (
@@ -69,8 +65,7 @@ export const deletePost = async (
   const { id } = req.body;
 
   try {
-    const postModel: Post = new Post();
-    const result = await postModel.deleteByID(id);
+    const result = await Post.deleteByID(id);
 
     if ((result as RowDataPacket)[0].affectedRows === 1) {
       return res.status(200).json(result[0]);
@@ -89,13 +84,12 @@ export const getAllPosts = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const postModel: Post = new Post();
   const username = req.body.username;
   try {
     if (username !== "admin@admin.com") {
       throw new Error("Unauthorized!");
     } else {
-      const result = await postModel.adminFetchAll();
+      const result = await Post.adminFetchAll();
       return res.status(200).json({
         posts: result[0],
       });
